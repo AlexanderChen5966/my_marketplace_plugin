@@ -135,8 +135,8 @@ stack-review 的 spec 審查第 (e) 項（檢查 doubt-check 紀錄）這次有�
 | # | 卡 | 有標記的任務 | 照標記觸發？ | 找到要修的問題？ | 備註 |
 |---|---|---|---|---|---|
 | 1 | 推薦紀錄 01～04（2026-11-11，plugin 補測） | 任務 1：不帶 page／size、前端分頁 | ✅ 寫程式前用草稿跑，2 輪 | ✅ 第 1 輪：匯出擋空條件（全空公司時後端 500）、keepPreviousData 舊資料判斷匯出；另查出後端資料範圍疑似回歸（b7602ffb） | 跨模型使用者跳過；第 2 輪多為實作細節 |
-| 2 | | | | | |
-| 3 | | | | | |
+| 2 | 推薦紀錄明細 01～06（2026-11-19） | 任務 5：主框架切換公司時明細頁回列表 | ✅ 寫程式前用草稿跑，3 輪後交使用者決定 1 項 | ✅ 3 輪都有：切換公司時會用新公司身分查舊公司被推薦公司的明細；畫面層 `enabled` 擋不住 `refetch`／`resetQueries`；比對與明細是兩支 request 有空窗。**設計因此從主框架改到 API 層** | 跨模型使用者跳過。requirements 寫任務文件時判斷「網址參數不是新風險」，被 doubt-check 推翻——該標的其實是任務 2（D1），不只任務 5 |
+| 3 | 發票申請 01～07（2026-11-20） | 任務 1：詳情／回覆先用 `GET /tickets/{id}` 驗證公司；任務 4：頁面層 | 🟡 任務 1 寫程式前用草稿跑 2 輪；任務 4 的第 3 輪是頁面寫完、commit 前才審 | ✅ 3 輪都有：回來的 `groupId` 要再比（store 與實際 header 可能不一致）；結案的單回覆會 500 英文訊息→送出前檢查 PENDING；快取裡一時的 rejected 會誤導回列表；`isPending` 擋不住同 tick 連按 | 跨模型使用者跳過。**本表 3 張都找到要修的問題 → 依條件保留 doubt-check**（使用者 2026-11-20 確認保留） |
 
 操作紀錄（01～03）不算：當時還沒有標記規則。
 
@@ -148,8 +148,8 @@ stack-review 的 spec 審查第 (e) 項（檢查 doubt-check 紀錄）這次有�
 |---|---|---|---|---|---|
 | 1 | 操作紀錄 02 | antd Drawer、axios 型別擴充、Clipboard、Blob | ✅ | ✅ `maskClosable` 已棄用；`styles.wrapper` 文件矛盾靠 `DrawerPanel.d.ts` 解決 | 另有 1 次誤報（範例泛型），已加「用編譯器實測」 |
 | 2 | 推薦紀錄 01～04 | TanStack Query `hashKey`、React `useId`、antd Popover（沿用 DateRangeSelector） | ❌ `hashKey` 是 stack-review 建議後加的，沒附官方文件出處；任務文件只寫 axios `params`「未驗證（依訓練資料）」 | ❌ | 用 `tsc` 與測試驗證可用 |
-| 3 | | | | | |
-| 4 | | | | | |
+| 3 | 推薦紀錄明細 01～06 | Next `useSearchParams`（static export）、TanStack `placeholderData` 函式形式、`refetch` 與 `enabled` 的關係 | 🟡 `useSearchParams` 附了官方文件網址；`placeholderData` 函式形式與「`refetch` 不看 `enabled`」沒附出處（來自 reviewer） | ✅ `useSearchParams` 必須包 Suspense，否則 `next build` 失敗——寫程式前查到，`npm run build` 驗證過 | `refetch` 那條是 doubt-check 找到的，不是 source-driven |
+| 4 | 發票申請 01～07 | TanStack `queryFn` 的 `queryKey` 參數、`mutate` 的 per-call `onSettled`、antd `Input.TextArea` `autoSize`、`Object.hasOwn` | ❌ 任務文件沒有框架用法出處欄，實作時也沒查官方文件 | ❌ | 「`useIsMutating`／`isPending` 經 `notifyManager` 延後通知」是 doubt-check reviewer 讀套件原始碼找到的，不是 source-driven |
 | 5 | | | | | |
 
 ### 8.3 沉澱判斷（5 張卡）
@@ -160,8 +160,8 @@ stack-review 的 spec 審查第 (e) 項（檢查 doubt-check 紀錄）這次有�
 |---|---|---|---|---|
 | 1 | 操作紀錄 03 | 更新跨專案記憶〈reference_flutter_web_ui_compare〉4 條 | ✅ | 另依使用者指示寫 bug 紀錄（非 Step 7 提議） |
 | 2 | 推薦紀錄 01～04 | 提議 2 項（AGENTS.md／datatable-safety 補 BATCH_SIZE 規則的例外；flutter-ui-compare KNOWN-CAUSES 補 2 條）＋ skill 改善 1 項交給 retro | ✅ A 採用（AGENTS.md 1.11、datatable-safety）；❌ B 未採用 | |
-| 3 | | | | |
-| 4 | | | | |
+| 3 | 推薦紀錄明細 01～06 | 使用者指定更新回顧文件第 13 節與專案記憶（非 Step 7 提議）；Step 7 另提議 S-20261119-1：flutter-ui-compare KNOWN-CAUSES 補「Pro→免費 icon 字形寬不同」 | ✅ 採用（flutter-ui-compare v0.1.2） | |
+| 4 | 發票申請 01～07 | 提議 S-20261120-1：flutter-ui-compare KNOWN-CAUSES 補「多行輸入框文字低約 20px：Flutter `SLInputTextField(title: '')` 空 title 佔一行」 | ✅ 採用（2026-11-20） | 回顧文件第 14.3 節已記（使用者指定的遷移流程文件，非 Step 7 提議） |
 | 5 | | | | |
 
 bench v3（SSGS-13687）的提議也被採用，但不是實際任務，不算。
@@ -178,6 +178,6 @@ bench v3（SSGS-13687）的提議也被採用，但不是實際任務，不算�
 |---|---|---|---|
 | 1 | 操作紀錄 01～03 | ✅ doubt-check「等最後 stack-review 再一起看」：02 實作完才補審 | 當時 doubt-check 由 agent 自行判斷觸發；0.2.0 已改成標記觸發、寫程式之前跑 |
 | 2 | 推薦紀錄 01～04 | ❌ 沒有：requirements 標了「未驗證」、stack-review 指定範圍（使用者要求，非偷懶不 fetch）、doc-update 沒驗到的項目保留未勾 | flutter-ui-compare 漏比主框架（標題、標誌）由使用者發現——不在任何藉口表上 |
-| 3 | | | |
-| 4 | | | |
+| 3 | 推薦紀錄明細 01～06 | ❌ 沒有：stack-review 有 fetch（分支落後 origin/main 4 個 commit，屬長期 POC 分支、未合併 main，沒處理）；doc-update 沒驗到的手動項目保留未勾並寫備註 | requirements 的「需求模糊叫 grilling」改用一次問 3 題的 AskUserQuestion，偏離字面但不在藉口表上 |
+| 4 | 發票申請 01～07 | ✅ 有 2 條：doubt-check「等最後 stack-review 再一起看」的變形——任務 4 頁面層是寫完才審（任務 1 的 API 層有照規定先審）；requirements「這個框架 API 我很熟」——新用法沒查官方文件、也沒標未驗證 | stack-review 有 fetch；doc-update 沒驗到的手動項目保留未勾並寫備註 |
 | 5 | | | |
