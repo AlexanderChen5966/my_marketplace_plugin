@@ -183,3 +183,5 @@ bench v3（SSGS-13687）的提議也被採用，但不是實際任務，不算�
 | 3 | 推薦紀錄明細 01～06 | ❌ 沒有：stack-review 有 fetch（分支落後 origin/main 4 個 commit，屬長期 POC 分支、未合併 main，沒處理）；doc-update 沒驗到的手動項目保留未勾並寫備註 | requirements 的「需求模糊叫 grilling」改用一次問 3 題的 AskUserQuestion，偏離字面但不在藉口表上 |
 | 4 | 發票申請 01～07 | ✅ 有 2 條：doubt-check「等最後 stack-review 再一起看」的變形——任務 4 頁面層是寫完才審（任務 1 的 API 層有照規定先審）；requirements「這個框架 API 我很熟」——新用法沒查官方文件、也沒標未驗證 | stack-review 有 fetch；doc-update 沒驗到的手動項目保留未勾並寫備註 |
 | 5 | 帳戶異動紀錄 01～07 | ✅ 有 1 條：doubt-check「等最後 stack-review 再一起看」——任務 2（`SLSelect`）程式寫好才審；之後 `ae93784d` 又改共用元件，到 stack-review 才補跑 | stack-review 有 fetch（分支只在本機、沒有上游，照使用者指定範圍）；doc-update 第一次找追蹤表時搜尋深度不夠，誤判檔案不在 |
+
+**判斷（2026-11-24，表滿 5 張）**：doubt-check「等最後 stack-review 再一起看」有 3 張（#1、#4、#5）做出，超過 2 張 → 表擋不住。使用者決定改成強制步驟：flutter-ui-compare v0.1.6 第 8 步「修正動到共用元件／全站樣式時 commit 前先跑 doubt-check」；doubt-check v0.3.3 常見藉口補「改動才幾行，先寫完再審」。沒有在 stack-review 加時機檢查（事後檢查擋不住；spec 審查 (e) 已會抓「複查後程式又改過」）。原條目「等最後 stack-review 再一起看」依條件應移除，**使用者決定保留**（與新增的「改動才幾行，先寫完再審」講的是不同情境）。其他條目 5 張都沒有人做出、也沒被引用。
