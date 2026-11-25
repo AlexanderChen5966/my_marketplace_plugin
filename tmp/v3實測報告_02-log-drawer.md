@@ -140,6 +140,10 @@ stack-review 的 spec 審查第 (e) 項（檢查 doubt-check 紀錄）這次有�
 
 表已滿、已決定保留。之後的卡仍記錄供參考：帳戶異動紀錄 01～07（2026-11-24）——任務 3 寫程式前用草稿跑 2 輪，找到 `clearCategory` 沒固定來源（會送出後端 400 的組合）、混合下拉產品類別 `OTHER` 與項目 `OTHER` 值衝突；任務 2 是程式寫好才審（1 輪），補了測試與型別；stack-review 後補跑 1 輪（共用元件預設行為改動），找到「項目」三種下拉缺 `key`。跨模型使用者都跳過。
 
+debounce 清空修正 01～03（2026-11-24）——任務 1（共用 hook）寫程式前用草稿跑 1 輪，找到要修的問題：`reset` 的型別會把函式當 updater、「誤套」測試計畫測不到回第 1 頁、reset 的前提沒寫；前提這項當時選「寫註解」，stack-review 再次指出後改成 reset 自己取消計時器（`999bc727`）。跨模型使用者跳過。
+
+幫助中心＋客服 01～05（2026-11-25）——不適用：4 個任務都標「否」（靜態頁、不打 API），spec 審查確認沒有改共用元件或全站樣式。
+
 操作紀錄（01～03）不算：當時還沒有標記規則。
 
 ### 8.2 source-driven（5 張有新框架用法的卡）
@@ -154,6 +158,8 @@ stack-review 的 spec 審查第 (e) 項（檢查 doubt-check 紀錄）這次有�
 | 4 | 發票申請 01～07 | TanStack `queryFn` 的 `queryKey` 參數、`mutate` 的 per-call `onSettled`、antd `Input.TextArea` `autoSize`、`Object.hasOwn` | ❌ 任務文件沒有框架用法出處欄，實作時也沒查官方文件 | ❌ | 「`useIsMutating`／`isPending` 經 `notifyManager` 延後通知」是 doubt-check reviewer 讀套件原始碼找到的，不是 source-driven |
 | 5 | 帳戶異動紀錄 01～07（2026-11-24） | antd 6 Modal `focusable.trap`、rc-select 停用時壓掉選單（`postOpen`）不呼叫 `onOpenChange`、`@rc-component/virtual-list` 的 `listHeight`→`maxHeight` | 🟡 出處是 lock 版本的 `node_modules` 原始碼（檔案:行號寫在註解與 doubt-check 紀錄），沒查官方文件 | 🟡 有真問題（受控 `open` 遇停用會殘留＝錯誤用法），但是 Chrome 並排比對先發現、再讀原始碼確認根因，不是 source-driven 事先擋下 | 另有 jsdom 對已停用元素 `blur()` 無效，寫成跨專案記憶 |
 
+表已滿，之後的卡記錄供參考：debounce 清空修正 01～03（2026-11-24）——不適用（只用 React `useState`／`useEffect`／`useRef`／`useCallback` 與既有測試寫法，沒有新框架用法）。幫助中心＋客服 01～05（2026-11-25）——新用法只有 `Element.scrollTo({ behavior: 'smooth' })`，任務文件附了 MDN 出處；沒找到真問題（smooth 不能指定時長，任務文件事先寫明接受）。
+
 ### 8.3 沉澱判斷（5 張卡）
 
 條件：連續 5 張卡的 doc-update Step 7 都是「無需沉澱」，或提議都被使用者否決 → 移除 Step 7（沉澱改回由使用者主動提出）。至少 1 張提議被採用 → 保留。
@@ -167,6 +173,8 @@ stack-review 的 spec 審查第 (e) 項（檢查 doubt-check 紀錄）這次有�
 | 5 | 帳戶異動紀錄 01～07 | 提議 3 項：S-20261124-1 flutter-ui-compare KNOWN-CAUSES 補 3 條（v0.1.5）；S-20261124-2 跨專案記憶〈jsdom 沒有 focus fixup〉；S-20261124-3 專案記憶索引補這一頁 | ✅ 全部採用 | 回顧文件第 15 節是使用者指定的遷移流程文件，非 Step 7 提議 |
 
 bench v3（SSGS-13687）的提議也被採用，但不是實際任務，不算。
+
+表已滿，之後的卡記錄供參考：debounce 清空修正 01～03（2026-11-24）——提議 S-20261124-4（回顧文件檢查清單補「有搜尋框＋清空的列表頁」一條）——✅ 採用（2026-11-24，寫進回顧文件 4.6）。幫助中心＋客服 01～05（2026-11-25）——提議 S-20261125-1（專案記憶〈React+Next 改寫方向〉更新已完成頁面與下一步）——✅ 採用（2026-11-25）；flutter-ui-compare v0.1.7（KNOWN-CAUSES 補 2 條）是比對後使用者指示寫入，非 Step 7 提議。
 
 ### 8.4 常見藉口表（5 張卡；requirements、stack-review、doc-update、doubt-check 四張表）
 
@@ -185,3 +193,5 @@ bench v3（SSGS-13687）的提議也被採用，但不是實際任務，不算�
 | 5 | 帳戶異動紀錄 01～07 | ✅ 有 1 條：doubt-check「等最後 stack-review 再一起看」——任務 2（`SLSelect`）程式寫好才審；之後 `ae93784d` 又改共用元件，到 stack-review 才補跑 | stack-review 有 fetch（分支只在本機、沒有上游，照使用者指定範圍）；doc-update 第一次找追蹤表時搜尋深度不夠，誤判檔案不在 |
 
 **判斷（2026-11-24，表滿 5 張）**：doubt-check「等最後 stack-review 再一起看」有 3 張（#1、#4、#5）做出，超過 2 張 → 表擋不住。使用者決定改成強制步驟：flutter-ui-compare v0.1.6 第 8 步「修正動到共用元件／全站樣式時 commit 前先跑 doubt-check」；doubt-check v0.3.3 常見藉口補「改動才幾行，先寫完再審」。沒有在 stack-review 加時機檢查（事後檢查擋不住；spec 審查 (e) 已會抓「複查後程式又改過」）。原條目「等最後 stack-review 再一起看」依條件應移除，**使用者決定保留**（與新增的「改動才幾行，先寫完再審」講的是不同情境）。其他條目 5 張都沒有人做出、也沒被引用。
+
+之後的卡記錄供參考：debounce 清空修正 01～03（2026-11-24）——沒有做出表上明列的行為：doubt-check 在寫程式前用草稿跑；stack-review 有 fetch（落後 origin/main 4 個 Flutter commit，長期 POC 分支不合併，照使用者指定範圍）；doc-update 手動驗證是使用者實測通過後才打勾。幫助中心＋客服 01～05（2026-11-25）——沒有做出表上明列的行為：stack-review 有 fetch（分支沒有上游，照使用者指定範圍 `999bc727..HEAD`）；doc-update 沒在瀏覽器點的外連項目保留未勾並寫原因。
